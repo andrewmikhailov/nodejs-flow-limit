@@ -10,7 +10,11 @@ module.exports = {
                 return self._value[key];
             };
             self.inject = function (target, key) {
-                target[key] = self._value;
+                if (key) {
+                    target[key] = self._value;
+                } else {
+                    target[self._key] = self._value;
+                }
             };
             self.available = true;
             self.wrap = {
@@ -25,7 +29,6 @@ module.exports = {
                 delay: function (target, original) {
                     function wrapped() {
                         var parameters = arguments;
-                        self.inject(parameters, self._key);
                         setTimeout(function () {
                             return original.apply(target, parameters);
                         }, self._value.delay);
