@@ -27,7 +27,7 @@ The generic data flow for this use case is given on the diagram below:
 Let us say, we need to simulate two user queries to a database which target the same resource.
 
 1. We add a wrapper to the database query code in the micro-service which handles this request.
-2. We need to use the "redis-mutex" wrapper which delays code executions until the state of this wrapper is signaled in Redis.
+2. We need to use the "mutex" wrapper which delays code executions until the state of this wrapper is signaled in Redis.
 3. The unit-test makes a call to the API front-end adding instrumentation context data to request #1 and #2.
-4. The request is executed until the "redis-mutex" locks execution.
-5. The unit-test signals the appropriate "redis-mutex" that the code can proceed.
+4. The request is executed until the "mutex" locks execution.
+5. The unit-test signals the appropriate "mutex" that the code can proceed.
