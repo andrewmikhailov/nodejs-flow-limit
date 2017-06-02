@@ -1,3 +1,4 @@
+var mutex = require('node-mutex')();
 module.exports = {
     Context: function (parameters, key) {
         'use strict';
@@ -32,6 +33,24 @@ module.exports = {
                         setTimeout(function () {
                             return original.apply(target, parameters);
                         }, self._value.delay);
+                    }
+
+                    return wrapped;
+                },
+                mutex: function (target, original) {
+                    function wrapped() {
+
+                        // TODO: Generate a key which will be unique for all injected code
+                        mutex.lock('key', function (error, unlock) {
+                            if (error) {
+                                console.error('Unable to acquire lock: ', error);
+                                return;
+                            }
+
+                            original.apply(target, arguments);
+                            unlock();
+                        });
+
                     }
 
                     return wrapped;
