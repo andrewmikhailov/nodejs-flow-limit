@@ -20,7 +20,11 @@ Here is how we can instrument / debug a tree of micro-service calls:
 
 The generic data flow for this use case is given on the diagram below:
 
-![alt text](https://raw.githubusercontent.com/andrewmikhailov/nodejs-flow-limit/master/Documentation/micro-service+tree+synchronization.png)
+![alt text](https://raw.githubusercontent.com/andrewmikhailov/nodejs-flow-limit/master/Documentation/micro-service+tree+synchronization+state+diagram.png)
+
+The corresponding component diagram is given below:
+
+![alt text](https://raw.githubusercontent.com/andrewmikhailov/nodejs-flow-limit/master/Documentation/micro-service+tree+synchronization+component+diagram.png)
 
 
 ## Synchronizing database requests to create race conditions
