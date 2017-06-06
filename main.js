@@ -44,30 +44,22 @@ module.exports = {
                 },
                 mutex: function (target, original, codeIdentifier) {
                     function wrapped() {
+                        var parameters = arguments;
                         var value = self._value;
                         if (codeIdentifier != value.codeIdentifier) {
                             console.log('nodejs-flow-limit.mutex skipping by code identifier');
                             original.apply(target, arguments);
                             return;
                         }
-                        // This may be useful but for now don't plan to enable that
-                        // if (!value.codeIdentifier || !value.requestIdentifier) {
-                        //     console.log('nodejs-flow-limit no data to build mutex name');
-                        //     original.apply(target, arguments);
-                        //     return;
-                        // }
                         var mutexName = value.codeIdentifier + ':' + value.requestIdentifier;
                         console.log('nodejs-flow-limit.mutex trying to acquire lock: ' + mutexName);
-                        mutex.lock(mutexName, function (error, unlock) {
-                            if (error) {
-                                console.error('nodejs-flow-limit.mutex unable to acquire lock: ', error);
-                                return;
-                            }
-
-                            original.apply(target, arguments);
-                            unlock();
-                        });
-
+                        mutex
+                            .lock(mutexName, 3000)
+                            .then(function (unlock) {
+                                console.log('nodejs-flow-limit.mutex calling original implementation');
+                                original.apply(target, parameters);
+                                unlock();
+                            });
                     }
 
                     return wrapped;
