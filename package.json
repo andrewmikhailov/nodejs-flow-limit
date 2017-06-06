@@ -1,6 +1,6 @@
 {
   "name": "nodejs-flow-limit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./main.js",
   "dependencies": {
     "node-mutex": "^0.2.2"
